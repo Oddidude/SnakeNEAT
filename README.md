@@ -1,0 +1,3 @@
+# SnakeNEAT
+
+Snake using NEAT
