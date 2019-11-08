@@ -125,7 +125,7 @@ class Species {
     makeChild(innovationHistory) {
         let child
         if (Math.random() < 0.25) {
-            child = this.getRandomPlayer().brain.copy()
+            child = this.getRandomPlayer().brain.clone()
         } else {
             let parent1 = this.getRandomPlayer()
             let parent2
@@ -137,7 +137,9 @@ class Species {
         }
 
         child.mutate(innovationHistory)
+        child = new Player(child)
+        console.log(child)
         this.players.push(child)
-        return new Player(child)
+        return child
     }
 }

@@ -48,19 +48,23 @@ class Population {
                 children.push(species[i].makeChild(this.innovationHistory))
             }
         }
+        console.log(children)
 
         while (children.length < this.players.length) {
             children.push(new Player(new Network(6, 3, this.innovationHistory)))
         }
 
-        this.players.splice(0, this.players.length, [...children])
+        this.players = children
+
 
         this.generation++
         this.currentScore = 0
 
         for (let i = 0; i < this.players.length; i++) this.speciate(this.players[i])
-        for (let i = 0; i < this.species.length; i++) this.species[i].setPlayerColour()
-        console.log(this.players)
+        for (let i = 0; i < this.species.length; i++) {
+            this.species[i].setPlayerColour()
+        }
+        console.log("Species", this.species.length)
         this.startGames()
     }
 
