@@ -50,9 +50,22 @@ document.writeln(hello)
 
 document.writeln((1 / 250) * 1000)
 
-let a = new InnovationCounter()
 
-document.writeln(a.innovationNumber)
-document.writeln(a.newInnovation())
-document.writeln(a.newInnovation())
-document.writeln(a.innovationNumber)
+document.writeln("</br>")
+
+let hello2 = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+let hello2Copy = [...hello2]
+
+hello2.splice(hello2.length / 2, hello2.length)
+hello2Copy.splice(7, hello2Copy.length)
+
+document.writeln(hello2)
+document.writeln(hello2Copy)
+
+for (let i = 0; i < 50; i++) {
+    for (let j = 0; j < 2; j++) {
+        document.writeln(j)
+        break 
+    }
+    document.writeln(i)
+}

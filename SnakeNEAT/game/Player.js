@@ -10,7 +10,7 @@ class Player {
         this.pos = [createVector(250, 250)]
         this.length = 3
 
-        this.colour = color(this.getColour(), this.getColour(), this.getColour())
+        this.colour = color("White")
 
         this.direction = direction.UP
 
@@ -25,13 +25,15 @@ class Player {
         this.vision = []
         this.brain = brain
 
-        this.fitness = 1000
+        this.steps = 100
+        this.fitness = 0
+
+        this.score = 0
     }
 
-    getColour() {
-        return Math.floor(Math.random() * 256)
+    calculateFitness() {
+        this.fitness =  (this.score * 100) + this.steps
     }
-
 
     mutate(innovationHistory) {
         this.brain.mutate(innovationHistory)
@@ -134,9 +136,9 @@ class Player {
             this.checkApple(checkDirections[i], i, apple)
         }
 
-        this.vision[3] = this.isDead(this.pos[0].copy().add(checkDirections[0])) ? -1 : 1
-        this.vision[4] = this.isDead(this.pos[0].copy().add(checkDirections[1])) ? -1 : 1
-        this.vision[5] = this.isDead(this.pos[0].copy().add(checkDirections[2])) ? -1 : 1
+        if (!this.isDead(this.pos[0].copy().add(checkDirections[0]))) this.vision[3] = 1
+        if (!this.isDead(this.pos[0].copy().add(checkDirections[1]))) this.vision[4] = 1
+        if (!this.isDead(this.pos[0].copy().add(checkDirections[2]))) this.vision[5] = 1
     }
 
     checkApple(direc, visionIndex, apple) {
@@ -169,7 +171,7 @@ class Player {
     }
 
     isDead(pos = this.pos[0].copy()) {
-        return (this.fitness <= 1.5) ||
+        return (this.steps <= 1.5) ||
         this.outOfBounds(pos) ||
         this.hitSelf(pos)
     }
@@ -178,8 +180,13 @@ class Player {
         if (this.pos[0].equals(apple.pos)) {
             apple.move(this.pos)
             this.length++
-            this.fitness += 100
+            this.steps += 300
+            this.score++
         }
+    }
+
+    clone() {
+        return new Player(this.brain.clone())
     }
 
     update(apple) {
@@ -206,9 +213,9 @@ class Player {
             this.distance = this.pos[0].dist(apple.pos)
 
             if (this.distance < this.pos[0].dist(apple.pos)) {
-                this.fitness++
+                this.steps++
             } else {
-                this.fitness -= 1.5
+                this.steps -= 1.5
             }
 
             this.checkEat(apple)
@@ -230,7 +237,7 @@ class Player {
 
         if (this.isDead()) {
             this.dead = true
-            this.fitness -= 100
+            this.steps -= 100
         }
     }
 }

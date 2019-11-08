@@ -1,9 +1,7 @@
 class Game {
-    constructor(brain) {
-        this.player = new Player(brain)
+    constructor(player) {
+        this.player = player
         this.apple = new Apple(this.player.pos)
-
-        this.score
     }
 
     mutate(innovationHistory) {
@@ -15,7 +13,7 @@ class Game {
     }
 
     getFitness() {
-        return (this.score * 100) + this.player.fitness
+        return this.player.getFitness()
     }
 
     reset(brain) {
@@ -30,7 +28,5 @@ class Game {
     draw() {
         this.player.draw()
         if (!this.player.dead) this.apple.draw()
-
-        this.score = this.player.length - 3
     }
 }
