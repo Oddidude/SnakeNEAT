@@ -69,3 +69,5 @@ for (let i = 0; i < 50; i++) {
     }
     document.writeln(i)
 }
+
+document.writeln(Math.abs(5 - 11))

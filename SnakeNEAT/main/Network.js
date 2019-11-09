@@ -27,23 +27,14 @@ class Network {
                 this.nodeNumber++
             }
             
-            //connect all nodes to each other with random weights
-            for (let layer1 = 0; layer1 < inputs; layer1++) {
-                for (let layer2 = 0; layer2 < outputs; layer2++) {
-                    this.addEdge(innovationHistory, this.nodes[0][layer1], this.nodes[1][layer2])
-                }
-            }
-
             //creation of the bias node
             this.biasNode = new Node(this.nodeNumber)
             this.biasNode.layer = 0
             this.nodes[0].push(this.biasNode)
             this.nodeNumber++
 
-            //connections created to bias node
-            for (let node = 0; node < this.nodes[1].length; node++) {
-                this.addEdge(innovationHistory, this.biasNode, this.nodes[1][node], 1)
-            }
+            //create a single starter connection
+            this.randomEdge(innovationHistory)
         } else {
             //creates an empty network
             this.nodes = []
@@ -106,6 +97,22 @@ class Network {
         }
     }
 
+    //add random connection
+    randomEdge(innovationHistory) {
+        if (!this.isFullyConnected()) {
+            let random1 = this.findNode(Math.floor(Math.random() * this.nodeNumber))
+            let random2
+            do {
+                random2 = this.findNode(Math.floor(Math.random() * this.nodeNumber))
+            } while(random1.layer === random2.layer || random1.connectedTo(random2) || random2.connectedTo(random1))
+            if (random1.layer < random2.layer) {
+                this.addEdge(innovationHistory, random1, random2)
+            } else {
+                this.addEdge(innovationHistory, random2, random1)
+            }
+        }
+    }
+
     //checks if a connection has previously existed otherwise adds the new conenction to the innovation history
     getInnovationNumber(innovationHistory, prevNode, nextNode) {
         let innovationNumber
@@ -146,21 +153,7 @@ class Network {
 
         //5% chance of adding a new edge
         if (Math.random() <= 0.05) {
-            if (!this.isFullyConnected()) {
-                let node1
-                let node2
-                do {
-                    node1 = this.findNode(Math.floor(Math.random() * this.nodeNumber))
-                    node2 = this.findNode(Math.floor(Math.random() * this.nodeNumber))
-                if (node1.layer > node2.layer) {
-                    let temp = node1
-                    node1 = node2
-                    node2 = temp
-                }
-                } while (node1.layer === node2.layer || node1.layer === 0 || node1.connectedTo(node2))
-
-                this.addEdge(innovationHistory, node1, node2)
-            }
+            this.randomEdge(innovationHistory)
         }
 
         //1% chance of adding a new node

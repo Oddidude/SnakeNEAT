@@ -17,7 +17,10 @@ class Population {
         this.currentScore = 0
         this.highscore = 0
 
-        for (let i = 0; i < this.maxSnakes; i++) this.players.push(new Player(new Network(6, 3, this.innovationHistory)))
+        for (let i = 0; i < this.maxSnakes; i++) {
+            this.players.push(new Player(new Network(6, 3, this.innovationHistory)))
+            this.players[i].mutate(this.innovationHistory)
+        }
         this.startGames()
     }
 
@@ -29,6 +32,7 @@ class Population {
     }
 
     evolve() {
+        for (let i = 0; i < 10; i++) this.players[0].mutate(this.innovationHistory)
         this.species = []
         let fitnessAvgSum
         for (let i = 0; i < this.species.length; i++) fitnessAvgSum += this.species[i].getAvgFitness()
@@ -48,7 +52,6 @@ class Population {
                 children.push(species[i].makeChild(this.innovationHistory))
             }
         }
-        console.log(children)
 
         while (children.length < this.players.length) {
             children.push(new Player(new Network(6, 3, this.innovationHistory)))
@@ -64,7 +67,6 @@ class Population {
         for (let i = 0; i < this.species.length; i++) {
             this.species[i].setPlayerColour()
         }
-        console.log("Species", this.species.length)
         this.startGames()
     }
 
