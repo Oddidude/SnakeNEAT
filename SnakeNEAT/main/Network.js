@@ -284,6 +284,16 @@ class Network {
         return false
     }
 
+    //finds a specific node in the nodes array using its node number but returns the position in the node array
+    findNodePos(number) {
+        for (let layer = 0; layer < this.nodes.length; layer++) {
+            for (let node = 0; node < this.nodes[layer].length; node++) {
+                if (this.nodes[layer][node].number === number) return [layer, node]
+            }
+        }
+        return false
+    }
+
     //prints the entire network
     print() {
         for (let layer = 0; layer < this.nodes.length; layer++) {
@@ -308,4 +318,56 @@ class Network {
         }
         document.writeln("----------------------------------------------------------------</br>")
     }
+
+    draw(height) {
+        let nodePoses = []
+        let edgePoses = []
+
+        let nodeSize = 0
+        for (let i = 0; i < this.nodes.length; i++) {
+            if (nodeSize < this.nodes[i].length) nodeSize = this.nodes[i].length
+        }
+
+        let x = 200
+        let h = 100
+        let y = height - h
+        let w = 490 - x
+
+        let dLayer = w / (this.nodes.length - 1)
+        let dNode = h / (nodeSize - 1) / 2
+        let yOffset
+
+        fill("Red")
+        for (let i = 0; i < this.nodes.length; i++) {
+            yOffset = (h - (this.nodes[i].length - 1) * dNode) / 2
+            nodePoses.push([])
+
+            for (let j = 0; j < this.nodes[i].length; j++) {
+                nodePoses[i].push(createVector(x + (i * dLayer),  y + yOffset + (j * dNode)))
+            }
+        }
+
+        for (let i = 0; i < this.nodes.length; i++) {
+            for (let j = 0; j < this.nodes[i].length; j++) {
+                for (let f = 0; f < this.nodes[i][j].outputs.length; f++) {
+                    let nextNodePos = this.findNodePos(this.nodes[i][j].outputs[f].nextNode.number)
+                    let prevNode = nodePoses[i][j]
+                    let nextNode = nodePoses[nextNodePos[0]][nextNodePos[1]]
+                    edgePoses.push([prevNode.x, prevNode.y, nextNode.x, nextNode.y])
+                }
+            }
+        }
+
+        for (let i = 0; i < edgePoses.length; i++) {
+            line(edgePoses[i][0], edgePoses[i][1] ,edgePoses[i][2], edgePoses[i][3])
+        }
+
+        for (let i = 0; i < nodePoses.length; i++) {
+            for (let j = 0; j < nodePoses[i].length; j++) {
+                ellipse(nodePoses[i][j].x, nodePoses[i][j].y, 5)
+            }
+        }
+    }
+
+
 }

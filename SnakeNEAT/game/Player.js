@@ -25,7 +25,7 @@ class Player {
         this.vision = []
         this.brain = brain
 
-        this.steps = 100
+        this.steps = 1000
         this.fitness = 0
 
         this.score = 0
