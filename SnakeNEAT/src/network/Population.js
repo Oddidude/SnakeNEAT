@@ -33,8 +33,6 @@ class Population {
     }
 
     evolve() {
-        this.species = []
-
         for (let i = 0; i < this.players.length; i++) this.speciate(this.players[i])
         this.calculateFitness()
         this.sortSpecies()
@@ -66,9 +64,7 @@ class Population {
         this.currentScore = -1
 
         for (let i = 0; i < this.players.length; i++) this.speciate(this.players[i])
-        for (let i = 0; i < this.species.length; i++) {
-            this.species[i].setPlayerColour()
-        }
+        for (let i = 0; i < this.species.length; i++) this.species[i].setPlayerColour()
         this.startGames()
     }
 
@@ -83,6 +79,7 @@ class Population {
     }
 
     speciate(player) {
+        this.species = []
         for (let j = 0; j < this.species.length; j++) {
             if (this.species[j].compatible(player.brain)) {
                 this.species[j].players.push(player)
@@ -133,7 +130,7 @@ class Population {
         strokeWeight(1)
     }
 
-    draw(x, y, w, h) {
+    draw(x, y, w, h, nodeSize = 5) {
         let canvasWidth = x + w
         let canvasHeight = y + h
         let statsSize = 200
@@ -145,6 +142,6 @@ class Population {
         line(statsSize - 10, y, statsSize - 10, canvasHeight)
 
         this.drawStats(x, y)
-        this.fitNet.draw(x + statsSize, y, w - (statsSize + 10), h)
+        this.fitNet.draw(x + statsSize, y, w - (statsSize + 10), h, nodeSize)
     }
 }

@@ -319,7 +319,8 @@ class Network {
         document.writeln("----------------------------------------------------------------</br>")
     }
 
-    draw(x, y, w, h) {
+    //draws the network on the screen
+    draw(x, y, w, h, size = 5) {
         let nodePoses = []
         let edgePoses = []
 
@@ -361,7 +362,7 @@ class Network {
         fill("Red")
         for (let i = 0; i < nodePoses.length; i++) {
             for (let j = 0; j < nodePoses[i].length; j++) {
-                ellipse(nodePoses[i][j].x, nodePoses[i][j].y, 5)
+                ellipse(nodePoses[i][j].x, nodePoses[i][j].y, size)
             }
         }
     }
