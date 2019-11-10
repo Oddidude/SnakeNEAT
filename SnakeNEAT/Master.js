@@ -56,7 +56,7 @@ function draw() {
         if (population.games[i].player.score > population.highscore) population.highscore = population.games[i].player.score
     }
 
-    population.draw(width, height)
+    population.draw(0, 500, 500, 100)
 
     if (population.allDead()) population.evolve()
 }
