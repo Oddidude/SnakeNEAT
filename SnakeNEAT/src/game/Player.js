@@ -223,6 +223,11 @@ class Player {
             this.getVision(apple)
             this.processData()
         }
+
+        if (this.isDead()) {
+            this.dead = true
+            this.steps -= 100
+        }
     }
 
     draw() {
@@ -233,11 +238,6 @@ class Player {
                 fill(color(50, 50))
             }
             rect(this.pos[i].x, this.pos[i].y, 10, 10)
-        }
-
-        if (this.isDead()) {
-            this.dead = true
-            this.steps -= 100
         }
     }
 }

@@ -47,7 +47,7 @@ function draw() {
             for (let i = 0; i < population.games.length; i++) population.games[i].draw()
             population.draw(0, height - 100, width, 100)
         } else {
-            population.draw(0, 0, width, height)
+            population.draw(0, 0, width, height, 15)
         }
     }
 }
