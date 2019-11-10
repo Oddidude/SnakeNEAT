@@ -134,13 +134,12 @@ class Population {
     }
 
     draw(x, y, w, h) {
-        let size = 100
         let canvasWidth = x + w
         let canvasHeight = y + h
         let statsSize = 200
 
         fill("White")
-        rect(0, canvasHeight - size, canvasWidth, size)
+        rect(0, canvasHeight - h, canvasWidth, h)
 
         fill("Black")
         line(statsSize - 10, y, statsSize - 10, canvasHeight)

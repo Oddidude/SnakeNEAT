@@ -1,7 +1,8 @@
 const width = 500
 const height = 600
 
-var manual = false
+var statsOnly = false
+var pause = false
 
 var population;
 
@@ -12,51 +13,41 @@ function setup() {
 }
 
 function keyPressed() {
-    if (manual) {
-        switch (keyCode) {
-            case 71:
-                for (let i = 0; i < population.games.length; i++) {
-                    population.games[i].player.turnLeft()
-                }
-                break
-            case 72:
-                for (let i = 0; i < population.games.length; i++) {
-                    population.games[i].player.turnRight()
-                }
-                break
-            default:
-                for (let i = 0; i < population.games.length; i++) {
-                    population.games[i].reset()
-                }
-                break
-        }
-
-        for (let i = 0; i < population.games.length; i++) {
-            population.games[i].player.move(keyCode)
-        }
+    switch (keyCode) {
+        case 32:
+            statsOnly = !statsOnly
+            break
+        case 71:
+            population.fitNet.printConsole()
+            break
+        case 80:
+            pause = !pause
+            break
+        case 81:
+            noLoop()
     }
-
-    if (keyCode === 71 && !manual) population.fitNet.printConsole()
-    if (keyCode === 81) noLoop()
 }
 
 function draw() {
-    background(140)
-    for (let i = 0; i < population.games.length; i++) {
-        if (!population.games[i].player.dead) {
-            population.games[i].update()
+    if (!pause) {
+        background(140)
+        for (let i = 0; i < population.games.length; i++) {
+            if (!population.games[i].player.dead) population.games[i].update()
+
+            if (population.games[i].player.score > population.currentScore) {
+                population.currentScore = population.games[i].player.score
+                population.fitNet = population.games[i].player.brain.clone()
+            }
+            if (population.games[i].player.score > population.highscore) population.highscore = population.games[i].player.score
         }
 
-        population.games[i].draw()
+        if (population.allDead()) population.evolve()
 
-        if (population.games[i].player.score > population.currentScore) {
-            population.currentScore = population.games[i].player.score
-            population.fitNet = population.games[i].player.brain.clone()
+        if (!statsOnly) {
+            for (let i = 0; i < population.games.length; i++) population.games[i].draw()
+            population.draw(0, height - 100, width, 100)
+        } else {
+            population.draw(0, 0, width, height)
         }
-        if (population.games[i].player.score > population.highscore) population.highscore = population.games[i].player.score
     }
-
-    population.draw(0, 500, 500, 100)
-
-    if (population.allDead()) population.evolve()
 }
