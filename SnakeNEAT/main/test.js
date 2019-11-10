@@ -58,9 +58,15 @@ let hello2Copy = [...hello2]
 
 hello2.splice(hello2.length / 2, hello2.length)
 hello2Copy.splice(7, hello2Copy.length)
+document.writeln("</br>")
 
 document.writeln(hello2)
+document.writeln("</br>")
 document.writeln(hello2Copy)
+document.writeln("</br>")
+
+document.writeln(hello2[hello2.length])
+document.writeln("</br>")
 
 for (let i = 0; i < 50; i++) {
     for (let j = 0; j < 2; j++) {
@@ -68,4 +74,13 @@ for (let i = 0; i < 50; i++) {
         break 
     }
     document.writeln(i)
+}
+
+document.writeln(Math.abs(5 - 11))
+document.writeln("</br>")
+
+for(let i = 0, j = 8; i < j; i++) {
+    document.writeln(i)
+    document.writeln(j)
+    document.writeln("</br>")
 }
