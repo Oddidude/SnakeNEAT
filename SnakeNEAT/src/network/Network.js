@@ -319,7 +319,7 @@ class Network {
         document.writeln("----------------------------------------------------------------</br>")
     }
 
-    draw(height) {
+    draw(x, y, w, h) {
         let nodePoses = []
         let edgePoses = []
 
@@ -328,16 +328,10 @@ class Network {
             if (nodeSize < this.nodes[i].length) nodeSize = this.nodes[i].length
         }
 
-        let x = 200
-        let h = 100
-        let y = height - h
-        let w = 490 - x
-
         let dLayer = w / (this.nodes.length - 1)
         let dNode = h / (nodeSize - 1) / 2
         let yOffset
 
-        fill("Red")
         for (let i = 0; i < this.nodes.length; i++) {
             yOffset = (h - (this.nodes[i].length - 1) * dNode) / 2
             nodePoses.push([])
@@ -347,21 +341,24 @@ class Network {
             }
         }
 
-        for (let i = 0; i < this.nodes.length; i++) {
-            for (let j = 0; j < this.nodes[i].length; j++) {
-                for (let f = 0; f < this.nodes[i][j].outputs.length; f++) {
-                    let nextNodePos = this.findNodePos(this.nodes[i][j].outputs[f].nextNode.number)
-                    let prevNode = nodePoses[i][j]
-                    let nextNode = nodePoses[nextNodePos[0]][nextNodePos[1]]
-                    edgePoses.push([prevNode.x, prevNode.y, nextNode.x, nextNode.y])
-                }
-            }
+        for (let i = 0; i < this.edges.length; i++) {
+            let prevNodePos = this.findNodePos(this.edges[i].prevNode.number)
+            let nextNodePos = this.findNodePos(this.edges[i].nextNode.number)
+            let prevNode = nodePoses[prevNodePos[0]][prevNodePos[1]]
+            let nextNode = nodePoses[nextNodePos[0]][nextNodePos[1]]
+            edgePoses.push([prevNode.x, prevNode.y, nextNode.x, nextNode.y])
         }
 
         for (let i = 0; i < edgePoses.length; i++) {
+            let colour = this.edges[i].weight > 0 ? color("Blue") : color("Green")
+            stroke(colour)
+            strokeWeight(Math.abs(this.edges[i].weight) * 2)
             line(edgePoses[i][0], edgePoses[i][1] ,edgePoses[i][2], edgePoses[i][3])
         }
+        stroke("Black")
+        strokeWeight(1)
 
+        fill("Red")
         for (let i = 0; i < nodePoses.length; i++) {
             for (let j = 0; j < nodePoses[i].length; j++) {
                 ellipse(nodePoses[i][j].x, nodePoses[i][j].y, 5)

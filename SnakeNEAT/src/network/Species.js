@@ -73,11 +73,11 @@ class Species {
             avg += this.players[i].fitness
         }
 
-        return avg / this.players.length
+        this.avgFitness =  avg / this.players.length
     }
 
     naturalSelection() {
-        this.players.splice(this.players.length / 2, this.players.length)
+        if (this.players.length > 2) this.players.splice(this.players.length / 2, this.players.length)
     }
 
     sortByFitness() {
