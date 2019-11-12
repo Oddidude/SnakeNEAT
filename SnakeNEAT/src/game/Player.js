@@ -32,7 +32,7 @@ class Player {
     }
 
     calculateFitness() {
-        this.fitness =  (this.score * 100) + this.steps
+        this.fitness = (this.score * 100) + this.steps
     }
 
     mutate(innovationHistory) {

@@ -33,38 +33,49 @@ class Population {
     }
 
     evolve() {
+        this.species = []
+        console.log("Speciate")
         for (let i = 0; i < this.players.length; i++) this.speciate(this.players[i])
+        console.log("Calculate fitness")
         this.calculateFitness()
+        console.log("Sort")
         this.sortSpecies()
 
-        let fitnessAvgSum
+        let fitnessAvgSum = 0
         for (let i = 0; i < this.species.length; i++) fitnessAvgSum += this.species[i].avgFitness
+        console.log("Remove")
         this.removeRedundant(fitnessAvgSum)
 
         let children = []
 
         for (let i = 0; i < this.species.length; i++) {
+            console.log("Push fittest")
             children.push(this.species[i].fittestPlayer.clone())
+            children[children.length - 1].colour = this.species[i].colour
 
-            let maxChildren = Math.floor(this.species[i].avgFitness / fitnessAvgSum * this.players.length - 1)
-            for (let j = 0; j < maxChildren; i++) {
-                children.push(species[i].makeChild(this.innovationHistory))
-                this.mutate(children[children.length - 1])
+            let maxChildren = Math.floor((this.species[i].avgFitness / fitnessAvgSum * this.players.length) - 1)
+            for (let j = 0; j < maxChildren; j++) {
+                console.log("Make child")
+                children.push(this.species[i].makeChild(this.innovationHistory))
+                this.mutate(children[children.length - 1].brain)
             }
         }
 
-        while (children.length < this.players.length) {
-            children.push(new Player(new Network(6, 3, this.innovationHistory)))
+        while (children.length < this.maxSnakes) {
+            console.log("Filler")
+            if (Math.random() < 0.25) {
+                children.push(new Player(new Network(6, 3, this.innovationHistory)))
+            } else {
+                children.push(this.species[0].makeChild(this.innovationHistory))
+                this.mutate(children[children.length - 1].brain)
+            }
         }
 
         this.players = children
 
-
         this.generation++
         this.currentScore = -1
 
-        for (let i = 0; i < this.players.length; i++) this.speciate(this.players[i])
-        for (let i = 0; i < this.species.length; i++) this.species[i].setPlayerColour()
         this.startGames()
     }
 
@@ -79,7 +90,6 @@ class Population {
     }
 
     speciate(player) {
-        this.species = []
         for (let j = 0; j < this.species.length; j++) {
             if (this.species[j].compatible(player.brain)) {
                 this.species[j].players.push(player)
@@ -100,7 +110,7 @@ class Population {
     removeRedundant(fitnessAvgSum) {
         for (let i = 0; i < this.species.length; i++) {
             this.species[i].naturalSelection()
-            if (i >= 2 && this.species[i].staleness > 15) this.species.splice(i, 0)
+            if (i >= 2 && this.species[i].staleness > 15) this.species.splice(i, 1)
             if (this.species[i].avgFitness / fitnessAvgSum * this.players.length < 1) this.species.splice(i, 1)
         }
     }
@@ -139,7 +149,7 @@ class Population {
         rect(0, canvasHeight - h, canvasWidth, h)
 
         fill("Black")
-        line(statsSize - 10, y, statsSize - 10, canvasHeight)
+        line(statsSize - 5 - nodeSize, y, statsSize - 5 - nodeSize, canvasHeight)
 
         this.drawStats(x, y)
         this.fitNet.draw(x + statsSize, y, w - (statsSize + 10), h, nodeSize)

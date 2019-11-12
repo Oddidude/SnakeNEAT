@@ -18,12 +18,6 @@ class Species {
         return Math.floor(Math.random() * 256)
     }
 
-    setPlayerColour() {
-        for (let i = 0; i < this.players.length; i++) {
-            this.players[i].colour = this.colour
-        }
-    }
-
     excessDisjointDiff(otherBrain) {
         let match = 0
 
@@ -68,10 +62,7 @@ class Species {
 
     getAvgFitness() {
         let avg = 0
-
-        for (let i = 0; i < this.players.length; i++) {
-            avg += this.players[i].fitness
-        }
+        for (let i = 0; i < this.players.length; i++) avg += this.players[i].fitness
 
         this.avgFitness =  avg / this.players.length
     }
@@ -87,7 +78,12 @@ class Species {
 
         fitnessCopy.push(this.players[0])
         for (let i = 1; i < this.players.length; i++) {
-            fitnessCopy = this.findPos(fitnessCopy, this.players[i])
+            let index = 0
+            if (fitnessCopy[index].fitness < this.players[i].fitness) {
+                index++
+            } else {
+                fitnessCopy.splice(index - 1, 0, this.players[i])
+            }
         }
 
         this.players = fitnessCopy
@@ -101,17 +97,6 @@ class Species {
         }
     }
 
-    findPos(fitnessCopy, player) {
-        for (let j = 0; j < fitnessCopy.length; j++) {
-            if (player.fitness < fitnessCopy[j].fitness) {
-                fitnessCopy.splice(j, 0, player)
-                return fitnessCopy
-            }
-        }
-        fitnessCopy.push(player)
-        return fitnessCopy
-    }
-
     shareFitness() {
         for (let i = 0; i < this.players.length; i++) {
             this.players[i].fitness /= this.players.length
@@ -119,7 +104,17 @@ class Species {
     }
 
     getRandomPlayer() {
-        return this.players[Math.floor(Math.random() * this.players.length)]
+        let totalFitness = 0
+        for (let i = 0; i < this.players.length; i++) totalFitness += Math.abs(this.players[i].fitness)
+
+        let target = Math.floor(Math.random() * totalFitness)
+        let sum = 0
+
+        for (let i = 0; i < this.players.length; i++) {
+            sum += Math.abs(this.players[i].fitness)
+            if (sum > target) return this.players[i]
+        }
+        console.log("Not selected", target, sum)
     }
 
     makeChild(innovationHistory) {
@@ -128,17 +123,13 @@ class Species {
             child = this.getRandomPlayer().brain.clone()
         } else {
             let parent1 = this.getRandomPlayer()
-            let parent2
-            do {
-                parent2 = this.getRandomPlayer()
-            } while (parent1 === parent2)
+            let parent2 = this.getRandomPlayer()
 
-            child = parent1.fitness > parent2.fitness ? parent1.brain.crossover(parent2) : parent2.brain.crossover(parent1)
+            child = parent1.fitness > parent2.fitness ? parent1.brain.crossover(parent2.brain) : parent2.brain.crossover(parent1.brain)
         }
 
-        child.mutate(innovationHistory)
         child = new Player(child)
-        console.log(child)
+        child.colour = this.colour
         this.players.push(child)
         return child
     }
