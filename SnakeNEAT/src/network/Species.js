@@ -9,7 +9,7 @@ class Species {
 
         this.excessDisjointCoEff = 1
         this.weigthDiffCoEff = 0.5
-        this.threshold = 3
+        this.threshold = 5
 
         this.colour = color(this.getColour(), this.getColour(), this.getColour())
     }
@@ -74,15 +74,14 @@ class Species {
     sortByFitness() {
         if (this.players.length === 0) return
 
-        let fitnessCopy = []
+        let fitnessCopy = [this.players[0]]
 
-        fitnessCopy.push(this.players[0])
         for (let i = 1; i < this.players.length; i++) {
-            let index = 0
-            if (fitnessCopy[index].fitness < this.players[i].fitness) {
-                index++
-            } else {
-                fitnessCopy.splice(index - 1, 0, this.players[i])
+            for (let index = 0; index < fitnessCopy.length; index++) {
+                if (fitnessCopy[index].fitness > this.players[i].fitness) {
+                    fitnessCopy.splice(index, 0, this.players[i])
+                    break
+                }
             }
         }
 
@@ -99,7 +98,7 @@ class Species {
 
     shareFitness() {
         for (let i = 0; i < this.players.length; i++) {
-            this.players[i].fitness /= this.players.length
+            this.players[i].fitness /= this.players.length - 1
         }
     }
 
@@ -117,7 +116,7 @@ class Species {
         console.log("Not selected", target, sum)
     }
 
-    makeChild(innovationHistory) {
+    makeChild() {
         let child
         if (Math.random() < 0.25) {
             child = this.getRandomPlayer().brain.clone()

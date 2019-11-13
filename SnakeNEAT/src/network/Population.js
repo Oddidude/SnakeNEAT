@@ -34,39 +34,32 @@ class Population {
 
     evolve() {
         this.species = []
-        console.log("Speciate")
         for (let i = 0; i < this.players.length; i++) this.speciate(this.players[i])
-        console.log("Calculate fitness")
         this.calculateFitness()
-        console.log("Sort")
         this.sortSpecies()
 
         let fitnessAvgSum = 0
         for (let i = 0; i < this.species.length; i++) fitnessAvgSum += this.species[i].avgFitness
-        console.log("Remove")
         this.removeRedundant(fitnessAvgSum)
 
         let children = []
 
         for (let i = 0; i < this.species.length; i++) {
-            console.log("Push fittest")
             children.push(this.species[i].fittestPlayer.clone())
             children[children.length - 1].colour = this.species[i].colour
 
             let maxChildren = Math.floor((this.species[i].avgFitness / fitnessAvgSum * this.players.length) - 1)
             for (let j = 0; j < maxChildren; j++) {
-                console.log("Make child")
-                children.push(this.species[i].makeChild(this.innovationHistory))
+                children.push(this.species[i].makeChild())
                 this.mutate(children[children.length - 1].brain)
             }
         }
 
         while (children.length < this.maxSnakes) {
-            console.log("Filler")
             if (Math.random() < 0.25) {
                 children.push(new Player(new Network(6, 3, this.innovationHistory)))
             } else {
-                children.push(this.species[0].makeChild(this.innovationHistory))
+                children.push(this.species[0].makeChild())
                 this.mutate(children[children.length - 1].brain)
             }
         }
@@ -105,6 +98,19 @@ class Population {
             this.species[i].shareFitness()
             this.species[i].getAvgFitness()
         }
+
+        let fitnessCopy = [this.species[0]]
+
+        for (let i = 1; i < this.species.length; i++) {
+            for (let index = 0; index < fitnessCopy.length; index++) {
+                if (fitnessCopy[index].fittest > this.species[i].fittest) {
+                    fitnessCopy.splice(index, 0, this.species[i])
+                    break
+                }
+            }
+        }
+
+        this.species = fitnessCopy
     }
 
     removeRedundant(fitnessAvgSum) {
@@ -125,6 +131,7 @@ class Population {
         this.games.splice(0, this.games.length)
         for (let i = 0; i < this.players.length; i++) {
             this.games.push(new Game(this.players[i]))
+            console.log(this.games[i].getFitness())
         }
     }
     drawStats(x, y) {

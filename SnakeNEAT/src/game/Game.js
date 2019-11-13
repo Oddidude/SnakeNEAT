@@ -13,7 +13,7 @@ class Game {
     }
 
     getFitness() {
-        return this.player.getFitness()
+        return this.player.fitness
     }
 
     reset(brain) {
