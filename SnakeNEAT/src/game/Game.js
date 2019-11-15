@@ -16,11 +16,6 @@ class Game {
         return this.player.fitness
     }
 
-    reset(brain) {
-        this.player = new Player(brain)
-        this.apple = new Apple(this.player.pos)
-    }
-
     update() {
         this.player.update(this.apple)
     }

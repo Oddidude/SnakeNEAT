@@ -7,9 +7,9 @@ class Species {
         this.staleness = 0
         this.identifier = player.brain.clone()
 
-        this.excessDisjointCoEff = 1
+        this.excessDisjointCoEff = 2
         this.weigthDiffCoEff = 0.5
-        this.threshold = 5
+        this.threshold = 2
 
         this.colour = color(this.getColour(), this.getColour(), this.getColour())
     }
@@ -64,7 +64,7 @@ class Species {
         let avg = 0
         for (let i = 0; i < this.players.length; i++) avg += this.players[i].fitness
 
-        this.avgFitness =  avg / this.players.length
+        this.avgFitness = avg / this.players.length
     }
 
     naturalSelection() {
@@ -98,7 +98,7 @@ class Species {
 
     shareFitness() {
         for (let i = 0; i < this.players.length; i++) {
-            this.players[i].fitness /= this.players.length - 1
+            this.players[i].fitness /= this.players.length
         }
     }
 

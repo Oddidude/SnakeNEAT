@@ -11,8 +11,8 @@ Simply open the *index.html* file in your favourite browser and watch it go
 
 Controls are fairly basic:
 
-- G - Print the neural network structure of the current fittest snake to console
-- Space - Toggle between viewing the snakes and stats or only stats
+- F - Print the neural network structure of the current fittest snake to console
+- J - Toggle between viewing the snakes and stats or only stats
 - P - Toggle pause game
 - Q - Stop the program running
 

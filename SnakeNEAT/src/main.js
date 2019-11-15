@@ -14,11 +14,11 @@ function setup() {
 
 function keyPressed() {
     switch (keyCode) {
-        case 32:
-            statsOnly = !statsOnly
-            break
-        case 71:
+        case 70:
             population.fitNet.printConsole()
+            break
+        case 74:
+            statsOnly = !statsOnly
             break
         case 80:
             pause = !pause

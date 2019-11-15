@@ -32,7 +32,7 @@ class Player {
     }
 
     calculateFitness() {
-        this.fitness = (this.score * 100) + this.steps
+        this.fitness = (this.score * 1000) + this.steps
     }
 
     mutate(innovationHistory) {
@@ -222,11 +222,11 @@ class Player {
 
             this.getVision(apple)
             this.processData()
-        }
 
-        if (this.isDead()) {
-            this.dead = true
-            this.steps -= 100
+            if (this.isDead()) {
+                this.dead = true
+                this.steps -= 100
+            }
         }
     }
 

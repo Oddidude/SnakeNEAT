@@ -34,12 +34,16 @@ class Population {
 
     evolve() {
         this.species = []
-        for (let i = 0; i < this.players.length; i++) this.speciate(this.players[i])
+        for (let i = 0; i < this.players.length; i++) this.findSpecies(this.players[i])
         this.calculateFitness()
         this.sortSpecies()
 
         let fitnessAvgSum = 0
-        for (let i = 0; i < this.species.length; i++) fitnessAvgSum += this.species[i].avgFitness
+        for (let i = 0; i < this.species.length; i++) {
+            this.species[i].naturalSelection()
+            this.species[i].getAvgFitness()
+            fitnessAvgSum += this.species[i].avgFitness
+        }
         this.removeRedundant(fitnessAvgSum)
 
         let children = []
@@ -78,11 +82,10 @@ class Population {
         }
         for (let i = 0; i < this.species.length; i++) {
             this.species[i].shareFitness()
-            this.species[i].getAvgFitness()
         }
     }
 
-    speciate(player) {
+    findSpecies(player) {
         for (let j = 0; j < this.species.length; j++) {
             if (this.species[j].compatible(player.brain)) {
                 this.species[j].players.push(player)
@@ -115,7 +118,6 @@ class Population {
 
     removeRedundant(fitnessAvgSum) {
         for (let i = 0; i < this.species.length; i++) {
-            this.species[i].naturalSelection()
             if (i >= 2 && this.species[i].staleness > 15) this.species.splice(i, 1)
             if (this.species[i].avgFitness / fitnessAvgSum * this.players.length < 1) this.species.splice(i, 1)
         }
@@ -128,10 +130,9 @@ class Population {
     }
 
     startGames() {
-        this.games.splice(0, this.games.length)
+        this.games = []
         for (let i = 0; i < this.players.length; i++) {
             this.games.push(new Game(this.players[i]))
-            console.log(this.games[i].getFitness())
         }
     }
     drawStats(x, y) {
@@ -140,10 +141,10 @@ class Population {
         strokeWeight(0)
         fill("Black")
         textSize(size)
-        text("Generation: " + population.generation, x, y + size)
-        text("Score: " + population.currentScore, x, y + (2 * size))
-        text("Highest: " + population.highscore, x, y + (3 * size))
-        text("Species: " + population.species.length, x, y + (4 * size))
+        text("Generation: " + this.generation, x, y + size)
+        text("Score: " + this.currentScore, x, y + (2 * size))
+        text("Highest: " + this.highscore, x, y + (3 * size))
+        text("Species: " + this.species.length, x, y + (4 * size))
         strokeWeight(1)
     }
 
