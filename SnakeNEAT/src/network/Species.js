@@ -8,8 +8,8 @@ class Species {
         this.identifier = player.brain.clone()
 
         this.excessDisjointCoEff = 2
-        this.weigthDiffCoEff = 0.5
-        this.threshold = 2
+        this.weigthDiffCoEff = 1
+        this.threshold = 6
 
         this.colour = color(this.getColour(), this.getColour(), this.getColour())
     }
@@ -18,19 +18,7 @@ class Species {
         return Math.floor(Math.random() * 256)
     }
 
-    excessDisjointDiff(otherBrain) {
-        let match = 0
-
-        for (let i = 0; i < this.identifier.edges.length; i++) {
-            for (let j = 0; j < otherBrain.edges.length; j++) {
-                if (this.identifier.edges[i].innovation === otherBrain.edges[j].innovation) match++
-            }
-        }
-
-        return (this.identifier.edges.length + otherBrain.edges.length) - (2 * match)
-    }
-
-    weightDiff(otherBrain) {
+    differences(otherBrain) {
         let match = 0
         let weightDiff = 0
 
@@ -43,14 +31,18 @@ class Species {
             }
         }
 
-        if (match === 0) return 100
-        return weightDiff / match
+        let results = []
+        results[0] = match === 0 ? 100 : weightDiff / match
+        results[1] = (this.identifier.edges.length + otherBrain.edges.length) - (2 * match)
+
+        return results
     }
 
     compatible(brain) {
         let compatibility
-        let excessDisjointDiff = this.excessDisjointDiff(brain)
-        let weightDiff = this.weightDiff(brain)
+        let results = this.differences(brain)
+        let weightDiff = results[0]
+        let excessDisjointDiff = results[1]
 
         let normalizer = Math.max(1, brain.edges.length - 20)
 
@@ -103,6 +95,11 @@ class Species {
     }
 
     getRandomPlayer() {
+        /**
+         * TODO
+         * 
+         * Make it so that you can only get children from top 20% of species
+         */
         let totalFitness = 0
         for (let i = 0; i < this.players.length; i++) totalFitness += Math.abs(this.players[i].fitness)
 

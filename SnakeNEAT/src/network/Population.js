@@ -64,8 +64,8 @@ class Population {
                 children.push(new Player(new Network(6, 3, this.innovationHistory)))
             } else {
                 children.push(this.species[0].makeChild())
-                this.mutate(children[children.length - 1].brain)
             }
+            this.mutate(children[children.length - 1].brain)
         }
 
         this.players = children
@@ -118,8 +118,14 @@ class Population {
 
     removeRedundant(fitnessAvgSum) {
         for (let i = 0; i < this.species.length; i++) {
-            if (i >= 2 && this.species[i].staleness > 15) this.species.splice(i, 1)
-            if (this.species[i].avgFitness / fitnessAvgSum * this.players.length < 1) this.species.splice(i, 1)
+            if (i >= 2 && this.species[i].staleness > 15) {
+                this.species.splice(i, 1)
+                i--
+            }
+            if (this.species[i].avgFitness / fitnessAvgSum * this.players.length - 1 < 1) {
+                this.species.splice(i, 1)
+                i--
+            }
         }
     }
 
