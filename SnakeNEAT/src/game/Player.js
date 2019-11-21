@@ -32,7 +32,7 @@ class Player {
     }
 
     calculateFitness() {
-        this.fitness = (this.score * 1000) + this.steps
+        this.fitness = Math.max(0, (this.score * 1000) + this.steps)
     }
 
     mutate(innovationHistory) {

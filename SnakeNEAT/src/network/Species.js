@@ -1,5 +1,5 @@
 class Species {
-    constructor(player) {
+    constructor(player, excessDisjointCoEff, weigthDiffCoEff, threshold) {
         this.players = [player]
         this.fittest = player.fitness
         this.fittestPlayer = player
@@ -7,9 +7,9 @@ class Species {
         this.staleness = 0
         this.identifier = player.brain.clone()
 
-        this.excessDisjointCoEff = 2
-        this.weigthDiffCoEff = 1
-        this.threshold = 6
+        this.excessDisjointCoEff = excessDisjointCoEff
+        this.weigthDiffCoEff = weigthDiffCoEff
+        this.threshold = threshold
 
         this.colour = color(this.getColour(), this.getColour(), this.getColour())
     }
@@ -49,6 +49,7 @@ class Species {
         compatibility = ((excessDisjointDiff * this.excessDisjointCoEff) / normalizer) + 
             (weightDiff * this.weigthDiffCoEff)
 
+        console.log(compatibility)
         return compatibility < this.threshold
     }
 
@@ -95,22 +96,16 @@ class Species {
     }
 
     getRandomPlayer() {
-        /**
-         * TODO
-         * 
-         * Make it so that you can only get children from top 20% of species
-         */
         let totalFitness = 0
         for (let i = 0; i < this.players.length; i++) totalFitness += Math.abs(this.players[i].fitness)
 
         let target = Math.floor(Math.random() * totalFitness)
         let sum = 0
 
-        for (let i = 0; i < this.players.length; i++) {
+        for (var i = 0; sum < target && i < this.players.length - 1; i++) {
             sum += Math.abs(this.players[i].fitness)
-            if (sum > target) return this.players[i]
         }
-        console.log("Not selected", target, sum)
+        return this.players[i]
     }
 
     makeChild() {

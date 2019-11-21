@@ -25,6 +25,7 @@ class Network {
                 this.nodes[1].push(new Node(this.nodeNumber))
                 this.nodes[1][i].layer = 1
                 this.nodeNumber++
+
             }
             
             //creation of the bias node
@@ -33,8 +34,26 @@ class Network {
             this.nodes[0].push(this.biasNode)
             this.nodeNumber++
 
-            //create a single starter connection
+            /*
+            //Used for starting with a minial network
             this.randomEdge(innovationHistory)
+
+            let startEdges = Math.floor((inputs * outputs) * 0.2)
+            for (let i = 0; i < startEdges; i++) {
+                this.randomEdge(innovationHistory)
+            }
+            */
+
+            //Used for starting with a fully connected network
+            for (let i = 0; i < this.nodes[0].length; i++) {
+                for (let j = 0; j < this.nodes[1].length; j++) {
+                    if (this.nodes[0][i] == this.biasNode) {
+                        this.addEdge(innovationHistory, this.biasNode, this.nodes[1][j], 1)
+                    } else {
+                        this.addEdge(innovationHistory, this.nodes[0][i], this.nodes[1][j])
+                    }
+                }
+            }
         } else {
             //creates an empty network
             this.nodes = []

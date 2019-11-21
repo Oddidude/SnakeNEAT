@@ -6,6 +6,12 @@ class Population {
         this.mutationRate = 0.6
         this.mutationNumber = 5
         
+        this.excessDisjointCoEff = 2
+        this.weigthDiffCoEff = 7
+        this.threshold = 2
+        this.thresholdModifier = 0.3
+        this.targetSpeciesSize = 5
+
         this.players = []
         this.games = []
         this.maxSnakes = 30
@@ -33,8 +39,15 @@ class Population {
     }
 
     evolve() {
-        this.species = []
+        for (let i = 0; i < this.species.length; i++) this.species.players = []
         for (let i = 0; i < this.players.length; i++) this.findSpecies(this.players[i])
+
+        if (this.species.length < this.targetSpeciesSize) {
+            this.threshold = Math.max(0, this.threshold - this.thresholdModifier)
+        }
+        if (this.species.length > this.targetSpeciesSize) {
+            this.threshold += this.thresholdModifier
+        }
         this.calculateFitness()
         this.sortSpecies()
 
@@ -92,7 +105,7 @@ class Population {
                 return
             }
         }
-        this.species.push(new Species(player))
+        this.species.push(new Species(player, this.excessDisjointCoEff, this.weigthDiffCoEff, this.threshold))
     }
 
     sortSpecies() {
@@ -118,13 +131,18 @@ class Population {
 
     removeRedundant(fitnessAvgSum) {
         for (let i = 0; i < this.species.length; i++) {
-            if (i >= 2 && this.species[i].staleness > 15) {
+            if (this.species[i].players.length === 0) {
                 this.species.splice(i, 1)
                 i--
-            }
-            if (this.species[i].avgFitness / fitnessAvgSum * this.players.length - 1 < 1) {
-                this.species.splice(i, 1)
-                i--
+            } else {
+                if (i >= 2 && this.species[i].staleness > 15) {
+                    this.species.splice(i, 1)
+                    i--
+                }
+                if (this.species[i].avgFitness / fitnessAvgSum * this.players.length - 1 < 1) {
+                    this.species.splice(i, 1)
+                    i--
+                }
             }
         }
     }
