@@ -1,5 +1,5 @@
 class Network {
-        constructor(inputs = -1, outputs, innovationHistory) {
+        constructor(inputs = -1, outputs, innovationHistory, fullyConnected = true) {
         if (inputs > 0) {
             //2d array used to store the nodes in their respective layers
             this.nodes = [
@@ -34,24 +34,22 @@ class Network {
             this.nodes[0].push(this.biasNode)
             this.nodeNumber++
 
-            /*
-            //Used for starting with a minial network
-            this.randomEdge(innovationHistory)
-
-            let startEdges = Math.floor((inputs * outputs) * 0.2)
-            for (let i = 0; i < startEdges; i++) {
-                this.randomEdge(innovationHistory)
-            }
-            */
-
-            //Used for starting with a fully connected network
-            for (let i = 0; i < this.nodes[0].length; i++) {
-                for (let j = 0; j < this.nodes[1].length; j++) {
-                    if (this.nodes[0][i] == this.biasNode) {
-                        this.addEdge(innovationHistory, this.biasNode, this.nodes[1][j], 1)
-                    } else {
-                        this.addEdge(innovationHistory, this.nodes[0][i], this.nodes[1][j])
+            if (fullyConnected) {
+                for (let i = 0; i < this.nodes[0].length; i++) {
+                    for (let j = 0; j < this.nodes[1].length; j++) {
+                        if (this.nodes[0][i] == this.biasNode) {
+                            this.addEdge(innovationHistory, this.biasNode, this.nodes[1][j], 1)
+                        } else {
+                            this.addEdge(innovationHistory, this.nodes[0][i], this.nodes[1][j])
+                        }
                     }
+                }
+            } else {
+                this.randomEdge(innovationHistory)
+
+                let startEdges = Math.floor((inputs * outputs) * 0.2)
+                for (let i = 0; i < startEdges; i++) {
+                    this.randomEdge(innovationHistory)
                 }
             }
         } else {
