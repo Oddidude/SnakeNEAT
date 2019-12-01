@@ -3,8 +3,7 @@ class Population {
         this.innovationHistory = new InnovationHistory()
         this.generation = 1
         
-        this.mutationRate = 0.6
-        this.mutationNumber = 5
+        this.mutationNumber = 4
         
         this.excessDisjointCoEff = 2
         this.weigthDiffCoEff = 7
@@ -149,13 +148,14 @@ class Population {
 
     mutate(brain) {
         for (let i = 0; i < this.mutationNumber; i++) {
-            if (Math.random() < this.mutationRate) brain.mutate(this.innovationHistory)
+            brain.mutate(this.innovationHistory)
         }
     }
 
     startGames() {
         this.games = []
         for (let i = 0; i < this.players.length; i++) {
+            for (let j = 0; j < 7; j++) this.mutate(this.players[i].brain)
             this.games.push(new Game(this.players[i]))
         }
     }

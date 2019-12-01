@@ -1,5 +1,5 @@
 class Network {
-        constructor(inputs = -1, outputs, innovationHistory, fullyConnected = true) {
+        constructor(inputs = -1, outputs, innovationHistory) {
         if (inputs > 0) {
             //2d array used to store the nodes in their respective layers
             this.nodes = [
@@ -34,7 +34,10 @@ class Network {
             this.nodes[0].push(this.biasNode)
             this.nodeNumber++
 
-            if (fullyConnected) {
+            //toggle this to start with either a minimal network or fully connected one
+            this.fullyConnected = false
+
+            if (this.fullyConnected) {
                 for (let i = 0; i < this.nodes[0].length; i++) {
                     for (let j = 0; j < this.nodes[1].length; j++) {
                         if (this.nodes[0][i] == this.biasNode) {

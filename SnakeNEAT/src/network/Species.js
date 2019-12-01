@@ -49,7 +49,6 @@ class Species {
         compatibility = ((excessDisjointDiff * this.excessDisjointCoEff) / normalizer) + 
             (weightDiff * this.weigthDiffCoEff)
 
-        console.log(compatibility)
         return compatibility < this.threshold
     }
 
