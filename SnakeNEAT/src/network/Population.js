@@ -106,14 +106,9 @@ class Population {
 
   findSpecies(player) {
     for (let j = 0; j < this.species.length; j++) {
-      try {
-        if (this.species[j].compatible(player.brain)) {
-          this.species[j].players.push(player);
-          return;
-        }
-      } catch (err) {
-        console.log(err);
-        console.log(this.species[j]);
+      if (this.species[j].compatible(player.brain)) {
+        this.species[j].players.push(player);
+        return;
       }
     }
     this.species.push(
@@ -156,13 +151,16 @@ class Population {
         let avgFitness =
           (this.species[i].avgFitness / fitnessAvgSum) * this.players.length -
           1;
-        if (i >= 2 && this.species[i].staleness > 15) {
+
+        if (isNaN(avgFitness)) {
           this.species.splice(i, 1);
           i--;
         }
-        if (avgFitness < 1 || isNaN(avgFitness)) {
-          this.species.splice(i, 1);
-          i--;
+        if (i >= 2) {
+          if (avgFitness < 1 || this.species[i].staleness > 15) {
+            this.species.splice(i, 1);
+            i--;
+          }
         }
       }
     }

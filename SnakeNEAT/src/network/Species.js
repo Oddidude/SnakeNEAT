@@ -90,7 +90,7 @@ class Species {
     if (this.players[0].fitness > this.fittest) {
       this.fittest = this.players[0].fitness;
       this.fittestPlayer = this.players[0];
-      this.identifier = this.players[0].clone();
+      this.identifier = this.players[0].brain.clone();
     } else {
       this.staleness++;
     }
