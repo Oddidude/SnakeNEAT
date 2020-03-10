@@ -90,7 +90,6 @@ class Population {
     }
 
     this.players = children;
-    console.log(this.fitNet === this.players[0]);
 
     this.generation++;
     this.currentScore = -1;
@@ -124,7 +123,6 @@ class Population {
       this.species[i].getAvgFitness();
     }
     this.species = this.quickSort(this.species);
-    console.log(this.species);
   }
 
   quickSort(x) {
@@ -157,18 +155,6 @@ class Population {
       } else {
         let avgFitness =
           (this.species[i].avgFitness / fitnessAvgSum) * this.players.length;
-
-        /*
-        console.log({
-          avgFitness: this.species[i].avgFitness,
-          "species.players.length": this.species[i].players.length,
-          fitnessAvgSum: fitnessAvgSum,
-          "avgFitness / fitnessAvgSum":
-            this.species[i].avgFitness / fitnessAvgSum,
-          "players.length": this.players.length,
-          "calculated avgFitness": avgFitness
-        });
-        */
 
         if (isNaN(avgFitness)) {
           this.species.splice(i, 1);
