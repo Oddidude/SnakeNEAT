@@ -86,6 +86,7 @@ class Population {
     }
 
     this.players = children;
+    console.log(this.fitNet === this.players[0]);
 
     this.generation++;
     this.currentScore = -1;
@@ -118,23 +119,33 @@ class Population {
       this.species[i].shareFitness();
       this.species[i].getAvgFitness();
     }
+    this.species = this.quickSort(this.species);
+    console.log(this.species);
+  }
 
-    let fitnessCopy = [this.species[0]];
+  quickSort(x) {
+    let less = [];
+    let pivotList = [];
+    let more = [];
 
-    for (let i = 1; i < this.species.length; i++) {
-      for (let index = 0; index < fitnessCopy.length; index++) {
-        if (fitnessCopy[index].fittest > this.species[i].fittest) {
-          fitnessCopy.splice(index, 0, this.species[i]);
-          break;
-        }
+    if (x.length <= 1) return x;
+
+    let pivot = x[0].fittest;
+    for (let i of x) {
+      if (i.fittest > pivot.fittest) {
+        less.push(i);
+      } else if (i.fittest < pivot.fittest) {
+        more.push(i);
+      } else {
+        pivotList.push(i);
       }
     }
-
-    this.species = fitnessCopy;
+    less = this.quickSort(less);
+    more = this.quickSort(more);
+    return less.concat(pivotList.concat(more));
   }
 
   removeRedundant(fitnessAvgSum) {
-    console.log(this.species);
     for (let i = 0; i < this.species.length; i++) {
       if (this.species[i].players.length === 0) {
         this.species.splice(i, 1);
@@ -180,6 +191,7 @@ class Population {
       this.games.push(new Game(this.players[i]));
     }
   }
+
   drawStats(x, y) {
     let size = 20;
     x += 2;

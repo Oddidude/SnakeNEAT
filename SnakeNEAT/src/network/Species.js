@@ -71,21 +71,32 @@ class Species {
       this.players.splice(this.players.length / 2, this.players.length);
   }
 
+  quickSort(x) {
+    let less = [];
+    let pivotList = [];
+    let more = [];
+
+    if (x.length <= 1) return x;
+
+    let pivot = x[0].fittest;
+    for (let i of x) {
+      if (i.fittest > pivot.fittest) {
+        less.push(i);
+      } else if (i.fittest < pivot.fittest) {
+        more.push(i);
+      } else {
+        pivotList.push(i);
+      }
+    }
+    less = this.quickSort(less);
+    more = this.quickSort(more);
+    return less.concat(pivotList.concat(more));
+  }
+
   sortByFitness() {
     if (this.players.length === 0) return;
 
-    let fitnessCopy = [this.players[0]];
-
-    for (let i = 1; i < this.players.length; i++) {
-      for (let index = 0; index < fitnessCopy.length; index++) {
-        if (fitnessCopy[index].fitness > this.players[i].fitness) {
-          fitnessCopy.splice(index, 0, this.players[i]);
-          break;
-        }
-      }
-    }
-
-    this.players = fitnessCopy;
+    this.players = this.quickSort(this.players);
 
     if (this.players[0].fitness > this.fittest) {
       this.fittest = this.players[0].fitness;
