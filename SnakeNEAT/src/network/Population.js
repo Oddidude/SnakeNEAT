@@ -64,7 +64,7 @@ class Population {
       children[children.length - 1].colour = this.species[i].colour;
 
       let maxChildren = Math.floor(
-        (this.species[i].avgFitness / fitnessAvgSum) * this.players.length - 1
+        (this.species[i].avgFitness / fitnessAvgSum) * this.players.length
       );
       for (let j = 0; j < maxChildren; j++) {
         children.push(this.species[i].makeChild());
@@ -141,11 +141,11 @@ class Population {
         i--;
       } else {
         let avgFitness =
-          (this.species[i].avgFitness / fitnessAvgSum) * this.players.length -
-          1;
+          (this.species[i].avgFitness / fitnessAvgSum) * this.players.length;
 
         console.log({
           avgFitness: this.species[i].avgFitness,
+          "species.players.length": this.species[i].players.length,
           fitnessAvgSum: fitnessAvgSum,
           "avgFitness / fitnessAvgSum":
             this.species[i].avgFitness / fitnessAvgSum,
