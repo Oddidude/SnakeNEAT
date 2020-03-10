@@ -1,5 +1,5 @@
 class Species {
-  constructor(player, excessDisjointCoEff, weigthDiffCoEff, threshold) {
+  constructor(player, threshold) {
     this.players = [player];
     this.fittest = player.fitness;
     this.fittestPlayer = player;
@@ -7,8 +7,8 @@ class Species {
     this.staleness = 0;
     this.identifier = player.brain.clone();
 
-    this.excessDisjointCoEff = excessDisjointCoEff;
-    this.weigthDiffCoEff = weigthDiffCoEff;
+    this.excessDisjointCoEff = 2;
+    this.weightDiffCoEff = 7;
     this.threshold = threshold;
 
     this.colour = color(this.getColour(), this.getColour(), this.getColour());

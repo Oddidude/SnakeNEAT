@@ -5,8 +5,6 @@ class Population {
 
     this.mutationNumber = 4;
 
-    this.excessDisjointCoEff = 2;
-    this.weigthDiffCoEff = 7;
     this.threshold = 3;
     this.thresholdModifier = 0.3;
     this.targetSpeciesSize = 5;
@@ -105,20 +103,13 @@ class Population {
   }
 
   findSpecies(player) {
-    for (let j = 0; j < this.species.length; j++) {
-      if (this.species[j].compatible(player.brain)) {
-        this.species[j].players.push(player);
+    for (let i = 0; i < this.species.length; i++) {
+      if (this.species[i].compatible(player.brain)) {
+        this.species[i].players.push(player);
         return;
       }
     }
-    this.species.push(
-      new Species(
-        player,
-        this.excessDisjointCoEff,
-        this.weigthDiffCoEff,
-        this.threshold
-      )
-    );
+    this.species.push(new Species(player, this.threshold));
   }
 
   sortSpecies() {
@@ -143,6 +134,7 @@ class Population {
   }
 
   removeRedundant(fitnessAvgSum) {
+    console.log(this.species);
     for (let i = 0; i < this.species.length; i++) {
       if (this.species[i].players.length === 0) {
         this.species.splice(i, 1);
@@ -151,6 +143,15 @@ class Population {
         let avgFitness =
           (this.species[i].avgFitness / fitnessAvgSum) * this.players.length -
           1;
+
+        console.log({
+          avgFitness: this.species[i].avgFitness,
+          fitnessAvgSum: fitnessAvgSum,
+          "avgFitness / fitnessAvgSum":
+            this.species[i].avgFitness / fitnessAvgSum,
+          "players.length": this.players.length,
+          "calculated avgFitness": avgFitness
+        });
 
         if (isNaN(avgFitness)) {
           this.species.splice(i, 1);
