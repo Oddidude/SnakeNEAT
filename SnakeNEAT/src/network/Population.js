@@ -52,8 +52,12 @@ class Population {
     let fitnessAvgSum = 0;
     for (let i = 0; i < this.species.length; i++) {
       this.species[i].naturalSelection();
-      this.species[i].getAvgFitness();
-      fitnessAvgSum += this.species[i].avgFitness;
+      if (this.species[i].players.length <= 0) {
+        this.species.splice(i, 1);
+      } else {
+        this.species[i].getAvgFitness();
+        fitnessAvgSum += this.species[i].avgFitness;
+      }
     }
     this.removeRedundant(fitnessAvgSum);
 
@@ -154,6 +158,7 @@ class Population {
         let avgFitness =
           (this.species[i].avgFitness / fitnessAvgSum) * this.players.length;
 
+        /*
         console.log({
           avgFitness: this.species[i].avgFitness,
           "species.players.length": this.species[i].players.length,
@@ -163,6 +168,7 @@ class Population {
           "players.length": this.players.length,
           "calculated avgFitness": avgFitness
         });
+        */
 
         if (isNaN(avgFitness)) {
           this.species.splice(i, 1);
