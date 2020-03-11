@@ -181,13 +181,17 @@ class Population {
   startGames() {
     this.games = [];
     for (let i = 0; i < this.players.length; i++) {
-      for (let j = 0; j < 7; j++) this.mutate(this.players[i].brain);
       this.games.push(new Game(this.players[i]));
     }
   }
 
   drawStats(x, y) {
-    let size = 20;
+    let alive = 0;
+    for (let player of this.players) {
+      if (!player.dead) alive++;
+    }
+
+    let size = 19;
     x += 2;
     strokeWeight(0);
     fill("Black");
@@ -195,7 +199,8 @@ class Population {
     text("Generation: " + this.generation, x, y + size);
     text("Score: " + this.currentScore, x, y + 2 * size);
     text("Highest: " + this.highscore, x, y + 3 * size);
-    text("Species: " + this.species.length, x, y + 4 * size);
+    text("Alive: " + alive, x, y + 4 * size);
+    text("Species: " + this.species.length, x, y + 5 * size);
     strokeWeight(1);
   }
 
