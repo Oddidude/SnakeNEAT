@@ -62,13 +62,14 @@ class Population {
     this.removeRedundant(fitnessAvgSum);
 
     let children = [];
+    children.push(this.players[0].clone());
 
     for (let i = 0; i < this.species.length; i++) {
       children.push(this.species[i].fittestPlayer.clone());
       children[children.length - 1].colour = this.species[i].colour;
 
       let maxChildren = Math.floor(
-        (this.species[i].avgFitness / fitnessAvgSum) * this.players.length
+        (this.species[i].avgFitness / fitnessAvgSum) * this.players.length - 1
       );
       for (let j = 0; j < maxChildren; j++) {
         children.push(this.species[i].makeChild());
@@ -154,7 +155,8 @@ class Population {
         i--;
       } else {
         let avgFitness =
-          (this.species[i].avgFitness / fitnessAvgSum) * this.players.length;
+          (this.species[i].avgFitness / fitnessAvgSum) * this.players.length -
+          1;
 
         if (isNaN(avgFitness)) {
           this.species.splice(i, 1);
