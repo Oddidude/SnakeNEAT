@@ -5,7 +5,7 @@ It's fairly unpolished but the game and algorithm work properly, despite how mes
 
 ## Running the program
 
-Simply open the _index.html_ file in your favourite browser and watch it go
+Use the included .jar file to run the app
 
 ## Controls
 
