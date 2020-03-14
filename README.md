@@ -9,7 +9,7 @@ Use the included .jar file to run the app or open index.html in your favourite b
 
 Alternatively you can use the below link to take you to the Github Pages hosted version.
 
-[Click here!] (https://repo.github.io/SnakeNEAT/src/index.html)
+[Click here!] (https://SnakeNEAT.github.io/src/index.html)
 
 ## Controls
 
