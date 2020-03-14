@@ -5,7 +5,11 @@ It's fairly unpolished but the game and algorithm work properly, despite how mes
 
 ## Running the program
 
-Use the included .jar file to run the app
+Use the included .jar file to run the app or open index.html in your favourite browser.
+
+Alternatively you can use the below link to take you to the Github Pages hosted version.
+
+[Click here!] (https://repo.github.io/SnakeNEAT/src/index.html)
 
 ## Controls
 
