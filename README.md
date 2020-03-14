@@ -9,7 +9,7 @@ Use the included .jar file to run the app or open index.html in your favourite b
 
 Alternatively you can use the below link to take you to the Github Pages hosted version.
 
-[Github Pages](https://Oddidude.github.io/SnakeNEAT/SnakeNEAT/src/main.html)
+[Github Pages](https://Oddidude.github.io/SnakeNEAT/)
 
 ## Controls
 
