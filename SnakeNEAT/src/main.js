@@ -9,7 +9,8 @@ var population;
 
 function setup() {
   frameRate(60);
-  createCanvas(width, height);
+  var canvas = createCanvas(width, height);
+  canvas.parent("game");
   population = new Population();
 }
 

@@ -1,4 +1,13 @@
 <html>
+  <style>
+    .game {
+      float: left;
+    }
+
+    .info {
+      padding-left: 510px;
+    }
+  </style>
   <head>
     <title>SnakeNEAT</title>
 
@@ -19,10 +28,10 @@
     <script src="game/Apple.js"></script>
     <script src="game/Game.js"></script>
 
-    <div style="float: left">
-      <script src="main.js"></script>
-    </div>
-    <div>
+    <script src="main.js"></script>
+
+    <div id="game" class="game"></div>
+    <div class="info">
       <h1>SnakeNEAT</h1>
       <p>
         This is my attempt at implementing the NEAT machine learning algorithm
@@ -30,7 +39,7 @@
       </p>
       <p>It's fairly unpolished but the game and algorithm work properly.</p>
       <h1>Controls</h1>
-      <ul class="control-list">
+      <ul>
         <li>
           F - Print the neural network structure of the current fittest snake to
           console
