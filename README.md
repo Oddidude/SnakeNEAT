@@ -1,7 +1,7 @@
 # SnakeNEAT
 
-This is my attempt at implementing the NEAT machine learning algorithm into the game Snake.
-It's fairly unpolished but the game and algorithm work properly, despite how messy most of the code is.
+This is my attempt at implementing the NEAT machine learning algorithm for the game Snake.
+It's fairly unpolished but the game and algorithm work properly.
 
 ## Running the program
 
